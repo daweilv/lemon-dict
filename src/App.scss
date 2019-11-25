@@ -1,0 +1,55 @@
+.lemon-dict {
+  position: relative;
+  padding: 15px;
+  color: #484c54;
+  width: 375px;
+  overflow: hidden;
+  border: 1px solid rgba(55, 53, 47, 0.2);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.14902) 0px 10px 20px 0px,
+    rgb(245, 245, 245) 0px -1px 0px 0px;
+}
+
+.ld-tools {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.ld-word {
+  font-size: 24px;
+}
+
+.ld-speeches {
+  font-size: 13px;
+  color: #bec0c4;
+}
+.ld-speech {
+  display: inline-flex;
+  align-items: center;
+  &:first-child {
+    margin-right: 15px;
+  }
+  i {
+    font-size: 18px;
+  }
+}
+
+.ld-explains {
+  font-size: 13px;
+  p {
+    //margin-top: 4px;
+    //margin-bottom: 4px;
+  }
+}
+
+.ld-dict__icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.ld-tab-panel {
+  max-height: 400px;
+  overflow: auto;
+}

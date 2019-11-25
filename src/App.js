@@ -1,24 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { Tabs } from 'antd';
 
+import dicts from './dicts/index';
+
+const { TabPane } = Tabs;
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="lemon-dict">
+      <div className="ld-head">
+        <h2 className="ld-word">good</h2>
+        <div className="ld-tools">
+          <i className="material-icons">unfold_less</i>
+          <i className="material-icons">favorite_border</i>
+        </div>
+      </div>
+
+      <Tabs>
+        {dicts.map(dict => {
+          const View = dict.View;
+          return (
+            <TabPane
+              key={dict.config.name}
+              className="ld-tab-panel"
+              tab={
+                <span>
+                  <img
+                    className="ld-dict__icon"
+                    src={dict.config.favicon}
+                    alt=""
+                  />
+                  {dict.config.name}
+                </span>
+              }
+            >
+              <View search="good" />
+            </TabPane>
+          );
+        })}
+      </Tabs>
     </div>
   );
 }
