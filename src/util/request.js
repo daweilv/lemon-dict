@@ -1,12 +1,14 @@
-import axios from 'axios';
-
-export const fetchDocument = async url => {
-  const res = await axios.request({
-    url:'https://cors-anywhere.herokuapp.com/'+url,
-    responseType: 'document',
-    withCredentials: false,
-  });
-  return res.data
+export const fetchDict = (dictType, search) => {
+    return new Promise(function(resolve, reject) {
+        chrome.runtime.sendMessage({ dictType, search }, function({
+            err,
+            res,
+        }) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
 };
-
-// fetchDOM('https://dictionary.cambridge.org/dictionary/english-chinese-simplified/check')
