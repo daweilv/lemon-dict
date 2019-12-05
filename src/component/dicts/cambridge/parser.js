@@ -1,22 +1,36 @@
-import { fetchDict } from '@/util/request';
-import config from '@/component/dicts/cambridge/config';
 import $ from '@/util/jqLite';
 
 const parser = doc => {
-    const data = $('.entry-body__el', doc).map(entry => {
+    const item = {
+        word: $('.headword', doc).text(),
+    };
+    if (!item.word) throw new Error('no_word');
+    item.ipa_uk = $('.uk .ipa', doc)
+        .eq(0)
+        .text();
+    item.pron_uk = $('.uk audio > source', doc)
+        .eq(0)
+        .attr('src');
+    item.ipa_us = $('.us .ipa', doc)
+        .eq(0)
+        .text();
+    item.pron_us = $('.us audio > source', doc)
+        .eq(0)
+        .attr('src');
+    item.entries = $('.entry-body__el', doc).map(entry => {
         return {
-            posgram: $('.posgram', entry).text(),
-            ipa_uk: $('.uk .ipa', entry).text(),
-            ipa_us: $('.us .ipa', entry).text(),
-            senses: $('.dsense', entry).map(dsense => {
+            pos: $('.pos-header .pos', entry).text(),
+            codes: $('.pos-header .dgc', entry).map(o => $(o).text()),
+            senses: $('.dsense', entry).map(sense => {
                 return {
-                    pos: $('.pos', dsense).text(),
-                    guideword: $('.guideword span', dsense).text(),
-                    definations: $('.def-block', dsense).map(defBlock => {
+                    pos: $('.pos', sense).text(),
+                    guide_word: $('.guideword span', sense).text(),
+                    defs: $('.def-block', sense).map(defBlock => {
                         return {
-                            defInfo: $('.def-info', defBlock).text(),
+                            level: $('.epp-xref', defBlock).text(),
+                            codes: $('.dgc', defBlock).map(o => $(o).text()),
                             def: $('.def', defBlock).text(),
-                            defTrans: $(
+                            def_trans: $(
                                 '.def-body > span.trans',
                                 defBlock
                             ).text(),
@@ -32,8 +46,9 @@ const parser = doc => {
             }),
         };
     });
-    console.log(data);
-    return data;
+
+    console.log(item);
+    return item;
 };
 
 export default parser;

@@ -15,9 +15,19 @@ class jqLite {
         return s.trim();
     }
 
+    attr(attr) {
+        if (!this.elems) return null;
+        return this.elems.getAttribute(attr);
+    }
+
     find(selector) {
         if (!this.elems) return null;
         return $(selector, this.elems);
+    }
+
+    eq(idx) {
+        if (!this.elems || idx >= this.elems.length || idx < 0) return null;
+        return $(this.elems[idx]);
     }
 
     map(callback) {
