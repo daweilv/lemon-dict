@@ -1,13 +1,11 @@
 const webpack = require('webpack');
 
 const merge = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const parts = require('./webpack.parts');
 const paths = require('./paths');
 
 const isEnvProduction = process.env.NODE_ENV === 'production';
-const isChrome = process.env.NODE_DEVICE === 'chrome';
+const isInExtension = process.env.DEVICE === 'extension';
 
 const commonConfig = merge([
     {
@@ -44,6 +42,12 @@ const commonConfig = merge([
 
     parts.loadImage(),
     parts.loadFont(),
+
+    parts.setFreeVariable({
+        'process.env.NODE_ENV': process.env.NODE_ENV,
+        'process.env.DEVICE': process.env.DEVICE,
+    }),
+    parts.copy({ from: paths.appPublic, to: paths.appBuild }),
 ]);
 
 const productionConfig = merge([
@@ -69,6 +73,9 @@ const developmentConfig = merge([
         },
         plugins: [new webpack.HotModuleReplacementPlugin()],
     },
+    parts.loadLess({
+        isEnvProduction,
+    }),
     parts.devServer(),
 ]);
 
@@ -82,28 +89,24 @@ const chromeConfig = merge([
         },
     },
     parts.clean(),
-    // parts.minifyJavaScript(),
-    // parts.minifyCSS(),
     parts.loadLess({
         isEnvProduction,
         filename: 'static/css/[name].css',
         chunkFilename: 'static/css/[name].chunk.css',
     }),
-    parts.copy({ from: paths.appPublic, to: paths.appBuild }),
-    // parts.manifest(),
 ]);
 
 const pages = [
     parts.page({
         title: 'lookup',
-        entry: { lookup: ['@babel/polyfill', './src/lookup.js'] },
+        entry: { lookup: './src/lookup.js' },
         template: paths.appHtml,
         chunks: ['lookup'],
         filename: 'lookup.html',
     }),
     parts.page({
         title: 'background',
-        entry: { background: ['@babel/polyfill', './src/background.js'] },
+        entry: { background: './src/background.js' },
         template: paths.appHtml,
         chunks: ['background'],
         filename: 'background.html',
@@ -115,5 +118,6 @@ const pages = [
 //     : isChrome
 //     ? chromeConfig
 //     : developmentConfig;
+const config = isInExtension ? chromeConfig : developmentConfig;
 
-module.exports = merge([...pages, commonConfig, chromeConfig]);
+module.exports = merge([...pages, commonConfig, config]);

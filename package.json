@@ -5,9 +5,8 @@
     "license": "MIT",
     "scripts": {
         "start": "NODE_ENV=development webpack-dev-server --mode=development --config config/webpack.config.js",
-        "build:dev": "NODE_ENV=development  webpack --mode=development --config config/webpack.config.js",
-        "build:chrome": "NODE_ENV=development NODE_DEVICE=chrome webpack --mode=development --config config/webpack.config.js",
-        "build": "NODE_ENV=production  webpack --mode=production --config config/webpack.config.js",
+        "build:chrome": "NODE_ENV=development DEVICE=extension webpack --mode=development --config config/webpack.config.js",
+        "dist": "NODE_ENV=production  webpack --mode=production --config config/webpack.config.js",
         "format": "prettier --config .prettierrc.js --write \"src/**/*.{js,jsx,css,less}\""
     },
     "devDependencies": {

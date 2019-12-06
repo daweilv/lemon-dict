@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const webpack = require('webpack');
 const paths = require('./paths');
 
 exports.page = ({
@@ -17,7 +18,7 @@ exports.page = ({
     entry,
     plugins: [
         new HtmlWebpackPlugin({
-            // chunks,
+            chunks,
             filename,
             template,
             title,
@@ -161,3 +162,12 @@ exports.copy = ({ from, to }) => ({
 exports.manifest = () => ({
     plugins: [new ManifestPlugin()],
 });
+
+exports.setFreeVariable = env => {
+    Object.keys(env).forEach(key => {
+        env[key] = JSON.stringify(env[key]);
+    });
+    return {
+        plugins: [new webpack.DefinePlugin(env)],
+    };
+};
