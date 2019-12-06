@@ -1,23 +1,32 @@
 class jqLite {
     constructor(selector, ctx) {
         if (typeof selector === 'string') {
-            this.elems = ctx.querySelectorAll(selector);
+            this.elems = Array.from(ctx.querySelectorAll(selector));
         } else {
-            this.elems = selector;
+            if (selector) {
+                if (selector.length) {
+                    this.elems = Array.from(selector);
+                } else {
+                    this.elems = [selector];
+                }
+            } else {
+                this.elems = null;
+            }
         }
     }
+
     text() {
         if (!this.elems) return '';
         let s = '';
         for (let i = 0; i < this.elems.length; i++) {
-            s += this.elems[i].innerText;
+            s += this.elems[i].textContent;
         }
         return s.trim();
     }
 
     attr(attr) {
         if (!this.elems) return null;
-        return this.elems.getAttribute(attr);
+        return this.elems.reduce((acc, o) => acc + o.getAttribute(attr), '');
     }
 
     find(selector) {
@@ -31,7 +40,7 @@ class jqLite {
     }
 
     map(callback) {
-        return Array.from(this.elems).map(callback);
+        return this.elems.map(callback);
     }
 }
 

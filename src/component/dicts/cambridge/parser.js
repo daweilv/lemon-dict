@@ -2,19 +2,19 @@ import $ from '@/util/jqLite';
 
 const parser = doc => {
     const item = {
-        word: $('.headword', doc).text(),
+        word: $('.headword', doc).eq(0).text(),
     };
     if (!item.word) throw new Error('no_word');
     item.ipa_uk = $('.uk .ipa', doc)
         .eq(0)
         .text();
-    item.pron_uk = $('.uk audio > source', doc)
+    item.pron_uk = $('.uk amp-audio > source', doc)
         .eq(0)
         .attr('src');
     item.ipa_us = $('.us .ipa', doc)
         .eq(0)
         .text();
-    item.pron_us = $('.us audio > source', doc)
+    item.pron_us = $('.us amp-audio > source', doc)
         .eq(0)
         .attr('src');
     item.entries = $('.entry-body__el', doc).map(entry => {
@@ -25,7 +25,7 @@ const parser = doc => {
                 return {
                     pos: $('.pos', sense).text(),
                     guide_word: $('.guideword span', sense).text(),
-                    defs: $('.def-block', sense).map(defBlock => {
+                    defs: $('.sense-body > .def-block', sense).map(defBlock => {
                         return {
                             level: $('.epp-xref', defBlock).text(),
                             codes: $('.dgc', defBlock).map(o => $(o).text()),
@@ -47,7 +47,7 @@ const parser = doc => {
         };
     });
 
-    console.log(item);
+    console.log(JSON.stringify(item));
     return item;
 };
 
