@@ -6,6 +6,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             ? 'from a content script:' + sender.tab.url
             : 'from the extension'
     );
-    fetchDictReal(request).then(sendResponse);
+    fetchDictReal(request).then(sendResponse).catch(sendResponse);
     return true;
 });

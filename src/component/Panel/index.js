@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import './style.less';
-import { Tabs } from 'antd';
+import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Dicts from '@/component/Dict/index';
+import ErrorBoundary from '@/component/Dict/ErrorBoundary';
 
-import dicts from '@/component/dicts/index';
-
-const { TabPane } = Tabs;
 function Panel({ search, afterClose }) {
     useEffect(() => {
         return () => {
@@ -15,7 +15,7 @@ function Panel({ search, afterClose }) {
     return (
         <div className="lemon-dict">
             <div className="ld-head">
-                <h2 className="ld-word">{search}</h2>
+                <div className="ld-word">{search}</div>
                 <div className="ld-tools">
                     <i className="material-icons">unfold_less</i>
                     <i className="material-icons">favorite_border</i>
@@ -23,25 +23,30 @@ function Panel({ search, afterClose }) {
             </div>
 
             <Tabs>
-                {dicts.map(dict => {
+                <TabList>
+                    {Dicts.map(dict => (
+                        <Tab key={dict.config.name}>
+                            <span>
+                                <img
+                                    className="ld-dict__icon"
+                                    src={dict.config.icon}
+                                    alt={dict.config.name}
+                                />
+                                {dict.config.name}
+                            </span>
+                        </Tab>
+                    ))}
+                </TabList>
+                {Dicts.map(dict => {
                     const View = dict.View;
                     return (
-                        <TabPane
-                            key={dict.config.name}
-                            className="ld-tab-panel"
-                            tab={
-                                <span>
-                                    <img
-                                        className="ld-dict__icon"
-                                        src={dict.config.favicon}
-                                        alt=""
-                                    />
-                                    {dict.config.name}
-                                </span>
-                            }
-                        >
-                            <View search={search} />
-                        </TabPane>
+                        <TabPanel key={dict.config.name}>
+                            <div className="ld-tab-panel">
+                                <ErrorBoundary>
+                                    <View search={search} />
+                                </ErrorBoundary>
+                            </div>
+                        </TabPanel>
                     );
                 })}
             </Tabs>

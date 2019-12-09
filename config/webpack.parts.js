@@ -55,6 +55,7 @@ exports.loadLess = ({
                         loader: MiniCssExtractPlugin.loader,
                         options: {
                             hmr: !isEnvProduction,
+                            reloadAll: true,
                         },
                     },
                     {
@@ -73,8 +74,8 @@ exports.loadLess = ({
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename,
-            chunkFilename,
+            filename: !isEnvProduction ? 'static/css/[name].css' : 'static/css/[name].[contenthash:8].css',
+            chunkFilename: !isEnvProduction ? 'static/css/[name].chunk.css' : 'static/css/[name].[contenthash:8].chunk.css',
         }),
     ],
 });
@@ -83,7 +84,7 @@ exports.loadImage = () => ({
     module: {
         rules: [
             {
-                test: /\.(png|jpg|jpeg|gif|mp3)$/i,
+                test: /\.(png|jpg|jpeg|gif|mp3|ico)$/i,
                 loader: 'url-loader',
                 options: {
                     limit: 8192,

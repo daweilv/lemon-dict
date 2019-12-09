@@ -13,6 +13,10 @@ function onDictEvent(e) {
         console.log('empty word');
         return;
     }
+    if (panel) {
+        panel.close();
+        panel = undefined;
+    }
     panel = createDictPanel({
         search,
         top: pageY + 10,
@@ -41,5 +45,5 @@ function isInsideDictPanel(target) {
 }
 
 const debounced = debounce(onDictEvent, 200);
-document.body.addEventListener('mouseup', debounced, false);
-document.body.addEventListener('click', onClick, false);
+window.addEventListener('mouseup', debounced, false);
+window.addEventListener('click', onClick, false);

@@ -5,7 +5,7 @@
     "content_scripts": [
         {
             "matches": ["*://*/*"],
-            "css": ["static/css/lookup.css"],
+            "css": ["static/css/lookup.css", "https://fonts.googleapis.com/icon?family=Material+Icons"],
             "js": ["static/js/lookup.js"]
         }
     ],

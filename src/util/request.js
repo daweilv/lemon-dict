@@ -1,4 +1,4 @@
-import { getDicts } from '@/component/dicts';
+import { getDict } from '@/component/Dict';
 import axios from 'axios';
 
 export const fetchDict = (dictType, search) => {
@@ -22,7 +22,7 @@ export const fetchDict = (dictType, search) => {
 
 export const fetchDictReal = param => {
     const { dictType, search } = param;
-    const dict = getDicts(dictType);
+    const dict = getDict(dictType);
     return new Promise(function(resolve, reject) {
         const proxy = 'https://cors-anywhere.herokuapp.com/';
         let url = dict.config.url(search);
@@ -37,12 +37,12 @@ export const fetchDictReal = param => {
             .then(res => {
                 console.log(res.status);
                 // console.log(res.data.documentElement.innerHTML);
-                resolve({ res: dict.parser(res.data) });
+                resolve(dict.parser(res.data));
                 // callback({ res: res.data });
             })
             .catch(err => {
                 console.log('catch', err);
-                resolve({ err });
+                reject(err);
             });
     });
 };

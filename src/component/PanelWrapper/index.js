@@ -12,7 +12,7 @@ function PanelWrapper(props) {
                 position: 'absolute',
                 top: props.top,
                 left: props.left,
-                zIndex:2000
+                zIndex: 2000,
             }}
         >
             {props.children}
